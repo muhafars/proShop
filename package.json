@@ -1,0 +1,36 @@
+{
+  "name": "proshop",
+  "version": "1.0.0",
+  "description": "ECommerce Apps with MERN Stack ",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "test": "node backend/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/muhafars/proShop.git"
+  },
+  "keywords": [
+    "ProShop",
+    "E-Commerce",
+    "Apps",
+    "built",
+    "with",
+    "MERN",
+    "Stack",
+    "Technology"
+  ],
+  "author": [
+    "muhafars",
+    "Muhammad Fajri Assidiq"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/muhafars/proShop/issues"
+  },
+  "homepage": "https://github.com/muhafars/proShop#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
