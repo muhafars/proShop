@@ -1,10 +1,12 @@
 import express from "express";
 import dotenv from "dotenv";
 dotenv.config();
+import dbConnect from "./config/db.js";
 import products from "./data/products.js";
 const port = process.env.PORT || 3002;
 const app = express();
 
+dbConnect();
 app.get("/", (req, res) => {
   res.send("API is Running ....");
 });
