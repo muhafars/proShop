@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 dotenv.config();
+import color from "colors";
 import dbConnect from "./config/db.js";
 import products from "./data/products.js";
 const port = process.env.PORT || 3002;
@@ -20,8 +21,11 @@ app.get("/api/products/:id", (req, res) => {
   res.json(product);
 });
 
+const rootApi = `http://localhost:${port}`.green.inverse;
+const productApi = `http://localhost:${port}/api/products`.green.inverse;
 app.listen(port, () =>
   console.log(
-    `Server is Running on http://localhost:${port} \nServer Product is Running on http://localhost:${port}/api/products`
+    `Server is Running on: \t${rootApi}`.yellow,
+    `\nServer Product is Running on: \t${productApi}`.yellow
   )
 );
