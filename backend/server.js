@@ -18,10 +18,10 @@ app.use(notFound);
 app.use(errorHandler);
 
 const rootApi = `http://localhost:${port}`.green.inverse;
-const productApi = `http://localhost:${port}/api/products`.green.inverse;
+const productApi = `http://localhost:${port}/api/products`.cyan.inverse;
 app.listen(port, () =>
   console.log(
-    `Server is Running on: \t${rootApi}`.yellow,
-    `\nServer Product is Running on: \t${productApi}`.yellow
+    `Server is Running on: \t${rootApi}`,
+    `\nServer Product is Running on: \t${productApi}`
   )
 );
