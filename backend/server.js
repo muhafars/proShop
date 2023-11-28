@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import color from "colors";
 import dbConnect from "./config/db.js";
+import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 import productRoutes from "./routes/productRouter.js";
 const port = process.env.PORT || 3002;
 const app = express();
@@ -13,6 +14,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/products", productRoutes);
+app.use(notFound);
+app.use(errorHandler);
 
 const rootApi = `http://localhost:${port}`.green.inverse;
 const productApi = `http://localhost:${port}/api/products`.green.inverse;
