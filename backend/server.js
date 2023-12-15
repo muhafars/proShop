@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import color from "colors";
 import dbConnect from "./config/db.js";
-import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
+import { notFound, errorHandler } from "./middlewares/errorMiddleware.js";
 import productRoutes from "./routes/productRouter.js";
 const port = process.env.PORT || 3002;
 const app = express();
