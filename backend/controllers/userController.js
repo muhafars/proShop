@@ -49,7 +49,11 @@ const registerUser = asyncHandler(async (req, res) => {
 // ~Access  private
 
 const logoutUser = asyncHandler(async (req, res) => {
-  res.send("Logout User");
+  res.cookie("jwt", "", {
+    httpOnly: true,
+    expires: new Date(0),
+  });
+  res.status(200).json({ message: "Logged Out Successfully" });
 });
 
 // ~Desc    Get User Profile
