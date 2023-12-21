@@ -8,15 +8,19 @@ import { generateToken, generateData } from "../utils/generateToken.js";
 const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
-  const checkPass = await user.matchPassword(password);
 
-  if (user && checkPass) {
-    generateToken(res, user._id);
-    res.status(200).json(generateData(user));
-  } else {
-    res.status(401);
-    throw new Error("Invalid Email or Password");
+  if (user) {
+    const isPasswordMatch = await user.matchPassword(password);
+
+    if (isPasswordMatch) {
+      generateToken(res, user._id);
+      res.status(200).json(generateData(user));
+      return; // Optional: Early return to avoid else block
+    }
   }
+
+  res.status(400);
+  throw new Error("Invalid Email or Password");
 });
 
 // ~Desc    Register User
