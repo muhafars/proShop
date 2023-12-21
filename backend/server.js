@@ -4,7 +4,8 @@ dotenv.config();
 import color from "colors";
 import dbConnect from "./config/db.js";
 import { notFound, errorHandler } from "./middlewares/errorMiddleware.js";
-import productRoutes from "./routes/productRouter.js";
+import productRoutes from "./routes/productRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 const port = process.env.PORT || 3002;
 const app = express();
 
@@ -13,7 +14,12 @@ app.get("/", (req, res) => {
   res.send("API is Running ....");
 });
 
+//body parser middlewaree
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.use("/api/products", productRoutes);
+app.use("/api/users", userRoutes);
 app.use(notFound);
 app.use(errorHandler);
 
