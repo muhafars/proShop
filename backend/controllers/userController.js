@@ -1,35 +1,18 @@
 import asyncHandler from "../middlewares/asyncHandler.js";
 import User from "../models/userModel.js";
-import jwt from "jsonwebtoken";
+import { generateToken, generateData } from "../utils/generateToken.js";
 
 // ~Desc    Auth User
 // ~Route   Get /api/users/login
 // ~Access  Public
-
 const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
   const checkPass = await user.matchPassword(password);
 
   if (user && checkPass) {
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "30D",
-    });
-
-    //Set jwt http cookie only
-    res.cookie("jwt", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV !== "development",
-      sameSite: "Strict",
-      maxAge: 30 * 24 * 60 * 60 * 1000,
-    });
-
-    res.json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      admin: user.isAdmin,
-    });
+    generateToken(res, user._id);
+    res.status(200).json(generateData(user));
   } else {
     res.status(401);
     throw new Error("Invalid Email or Password");
@@ -39,15 +22,30 @@ const authUser = asyncHandler(async (req, res) => {
 // ~Desc    Register User
 // ~Route   Post /api/users
 // ~Access  Public
-
 const registerUser = asyncHandler(async (req, res) => {
-  res.send("Register User");
+  const { name, email, password } = req.body;
+  const userExists = await User.findOne({ email });
+  if (userExists) {
+    res.status(400);
+    throw new Error("User Already Exist");
+  }
+  const user = await User.create({
+    name,
+    email,
+    password,
+  });
+  if (user) {
+    generateToken(res, user._id);
+    res.status(200).json(generateData(user));
+  } else {
+    res.status(400);
+    throw new Error("Invalid User Data");
+  }
 });
 
 // ~Desc    Logout user /clear cookies
 // ~Route   Post /api/users/logout
 // ~Access  private
-
 const logoutUser = asyncHandler(async (req, res) => {
   res.cookie("jwt", "", {
     httpOnly: true,
@@ -59,23 +57,40 @@ const logoutUser = asyncHandler(async (req, res) => {
 // ~Desc    Get User Profile
 // ~Route   Get /api/users/profile
 // ~Access  Private
-
 const getUserProfile = asyncHandler(async (req, res) => {
-  res.send("Get User Profile");
+  const user = await User.findById(req.user._id);
+  if (user) {
+    res.status(200).json(generateData(user));
+  } else {
+    res.status(400);
+    throw new Error("Invalid User Data");
+  }
 });
 
 // ~Desc    Update User Profile
 // ~Route   Put /api/users/profile
 // ~Access  Private
-
 const updateUserProfile = asyncHandler(async (req, res) => {
-  res.send("update User Profile");
+  const { name, email, password } = req.body;
+  const user = await User.findById(req.user._id);
+  if (user) {
+    user.name = name || user.name;
+    user.email = email || user.email;
+    if (password) {
+      user.password = password;
+    }
+
+    const updatedUser = await user.save();
+    res.status(200).json(generateData(updatedUser));
+  } else {
+    res.status(400);
+    throw new Error("User Not Found");
+  }
 });
 
 // ~Desc    Get Users
 // ~Route   Get /api/users
 // ~Access  Private/Admin
-
 const getUsers = asyncHandler(async (req, res) => {
   res.send("Get Users");
 });
