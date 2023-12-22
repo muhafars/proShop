@@ -1,10 +1,10 @@
 import { Nav } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
-const CheckOutSteps = (st1, st2, st3, st4) => {
+const CheckOutSteps = (step1, step2, step3, step4) => {
   return (
     <Nav>
       <Nav.Item>
-        {st1 ? (
+        {step1 ? (
           <LinkContainer to="/login">
             <Nav.Link>Sign In</Nav.Link>
           </LinkContainer>
@@ -13,7 +13,7 @@ const CheckOutSteps = (st1, st2, st3, st4) => {
         )}
       </Nav.Item>
       <Nav.Item>
-        {st2 ? (
+        {step2 ? (
           <LinkContainer to="/shipping">
             <Nav.Link>Shipping</Nav.Link>
           </LinkContainer>
@@ -22,7 +22,7 @@ const CheckOutSteps = (st1, st2, st3, st4) => {
         )}
       </Nav.Item>
       <Nav.Item>
-        {st3 ? (
+        {step3 ? (
           <LinkContainer to="/payment">
             <Nav.Link>Payment</Nav.Link>
           </LinkContainer>
@@ -31,12 +31,12 @@ const CheckOutSteps = (st1, st2, st3, st4) => {
         )}
       </Nav.Item>
       <Nav.Item>
-        {st4 ? (
+        {step4 ? (
           <LinkContainer to="/placeorder">
-            <Nav.Link>Place Order</Nav.Link>
+            <Nav.Link>Place</Nav.Link>
           </LinkContainer>
         ) : (
-          <Nav.Link disabled>Place Order</Nav.Link>
+          <Nav.Link disabled>Place</Nav.Link>
         )}
       </Nav.Item>
     </Nav>
